@@ -56,7 +56,7 @@ def fit(trainset, testset, load_path, save_path, test_step, save_step, max_epoch
         if epoch % test_step == 0:          
             print()
             for flk_img, org_img in testset.take(1):
-                Model.generate_images(flk_img, org_img)
+                Model.generate_images(flk_img, org_img, save_path='./outputs', epoch=epoch)
                 
         if (epoch + 1) % save_step == 0:
             Model.save_params(save_path, epoch) 

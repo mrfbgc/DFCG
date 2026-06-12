@@ -233,7 +233,7 @@ class DFcycgan(Model):
             i += 1
     
             
-    def generate_images(self, test_x, test_y):
+    def generate_images(self, test_x, test_y, save_path=None, epoch=0):
         rem = self.R(test_x)
         gen = self.G(test_y)
         plt.figure(figsize=(12, 12))
@@ -245,4 +245,7 @@ class DFcycgan(Model):
             plt.title(title[i])
             plt.imshow(display_list[i] * 0.5 + 0.5)
             plt.axis('off')
-        plt.show()
+        if save_path:
+            os.makedirs(save_path, exist_ok=True)
+            plt.savefig(os.path.join(save_path, f'epoch_{epoch:04d}.png'), bbox_inches='tight')
+        plt.close()
