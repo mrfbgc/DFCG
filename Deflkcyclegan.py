@@ -127,7 +127,7 @@ class DFcycgan(Model):
         for i in range(0, 1, 0.1):
             FPR = np.sum(fp>=i)/len(fp)
             TPR = np.sum(tp>=i)/len(tp)
-            curve.append([FRR, TPR])
+            curve.append([FPR, TPR])
         return curve
  
 
@@ -146,38 +146,38 @@ class DFcycgan(Model):
             D1.append(Dx_prime)
             D2.append(Dy_prime)     
      
-        if model=='full':
+        if mode=='full':
             DX = (tf.math.reduce_mean(sig_Dx[0])+tf.math.reduce_mean(sig_Dx[1])+tf.math.reduce_mean(sig_Dx[2]))/3
             DY = (tf.math.reduce_mean(sig_Dy[0])+tf.math.reduce_mean(sig_Dy[1])+tf.math.reduce_mean(sig_Dy[2]))/3
             DF.append(D1)
             DF.append(D2)    
-        elif model=='(4)':
+        elif mode=='(4)':
             DX = tf.math.reduce_mean(sig_Dx[2])
             DY = tf.math.reduce_mean(sig_Dy[2])
             DF.append(D1[2])
             DF.append(D2[2])
-        elif model=='(8)':
+        elif mode=='(8)':
             DX = tf.math.reduce_mean(sig_Dx[1])
             DY = tf.math.reduce_mean(sig_Dy[1])
             DF.append(D1[1])
             DF.append(D2[1])
-        elif model=='(16)':
+        elif mode=='(16)':
             DX = tf.math.reduce_mean(sig_Dx[0])
             DY = tf.math.reduce_mean(sig_Dy[0])
             DF.append(D1[0])
             DF.append(D2[0])
-        elif model=='(4,8)':
+        elif mode=='(4,8)':
             DX = (tf.math.reduce_mean(sig_Dx[1])+tf.math.reduce_mean(sig_Dx[2]))/2
             DY = (tf.math.reduce_mean(sig_Dy[1])+tf.math.reduce_mean(sig_Dy[2]))/2
             DF.append(D1[1:])
             DF.append(D2[1:])
-        elif model=='(4,16)':
+        elif mode=='(4,16)':
             del D1[1], D2[1]     
             DX = (tf.math.reduce_mean(sig_Dx[0])+tf.math.reduce_mean(sig_Dx[2]))/2
             DY = (tf.math.reduce_mean(sig_Dy[0])+tf.math.reduce_mean(sig_Dy[2]))/2
             DF.append(D1)
             DF.append(D2)
-        elif model=='(8,16)':
+        elif mode=='(8,16)':
             DX = (tf.math.reduce_mean(sig_Dx[0])+tf.math.reduce_mean(sig_Dx[1]))/2
             DY = (tf.math.reduce_mean(sig_Dy[0])+tf.math.reduce_mean(sig_Dy[1]))/2
             DF.append(D1[:-1])

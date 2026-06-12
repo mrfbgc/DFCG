@@ -14,7 +14,7 @@ parser.add_argument('--batch_size',  type=int,    default=1,     help='Batch siz
 parser.add_argument('--buffer_size', type=int,    default=1000,  help='Number of shuffle data')
 parser.add_argument('--test_step',   type=int,    default=1,     help='Test and every [test_step] epochs')
 parser.add_argument('--save_step',   type=int,    default=5,     help='Save every [save_step] epochs')
-parser.add_argument('--init_lr',     type=float,  default=1e-04, help='Learning rate')
+parser.add_argument('--initial_learning_rate',     type=float,  default=2e-04, help='Learning rate')
 parser.add_argument("--lr_decay",    type=float,  default=0.97,  help='Learning rate decay every [test_step] epochs')
 
 ## Training and evaluation path/lists, save path
@@ -42,7 +42,7 @@ Model = DFcycgan(**vars(args))
 
 
 def fit(trainset, testset, load_path, save_path, test_step, save_step, max_epoch, **kwargs):
-    if load_path != 0:
+    if load_path and os.path.exists(load_path):
         Model.load_params(load_path)
         
     i = 0 

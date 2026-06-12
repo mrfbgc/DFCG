@@ -111,7 +111,7 @@ class Generator(Model):
     
 class Discriminator(Model):
     def __init__(self):
-        super(Disc, self).__init__()
+        super(Discriminator, self).__init__()
         self.initializer = tf.random_normal_initializer(0., 0.02)
         self.resblk = res_blk()
         self.last_conv = layers.Conv2D(1, 4, 1, padding='same')

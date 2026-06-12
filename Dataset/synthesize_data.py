@@ -77,7 +77,7 @@ def make_matrix_2D(p):
     return e
 
 
-def read_ENF_img_3c(path, L1, L2, L3, p):
+def read_ENF_img_3c(path, L1, L2, L3, p, out_flk_dir, out_org_dir):
     '''
      path: str, data path to be synthesize
      L1: flickering intensity in R (1/A^c, c=R)
@@ -98,36 +98,34 @@ def read_ENF_img_3c(path, L1, L2, L3, p):
     b_2 = cv2.add(e/L3,b)
     
     img = cv2.merge([r_2,g_2,b_2])
-    ENF = cv2.merge([e/L1,e/L2,e/L3])
-    
     image = image*255.
-    img = img*255.
-    ENF = (ENF*0.5+0.5)*255.
+    img= np.clip(img * 255., 0, 255)
     
-    cv2.imwrite("C:/Users/LYC/Desktop/synthsis/syn/n3" + str(p) + ".jpg", img)
-    cv2.imwrite("E:/datasets/image/org_img/" + str(i) + ".jpg", image)
-    cv2.imwrite("C:/Users/LYC/Desktop/synthsis/enf/n3" + str(p) + "ENF.jpg", ENF)
+    base = os.path.splitext(os.path.basename(path))[0]
+    cv2.imwrite(os.path.join(out_flk_dir, base + f'_p{p[0]:.4f}.jpg'), img)
+    cv2.imwrite(os.path.join(out_org_dir, base + '.jpg'), image)
 
-def synthsize(root, model=0):
+
+def synthsize(root, out_flk_dir, out_org_dir, model=0):
     '''
      root: list, ele is the path of the image to be synthesized
      model: 0 —> Flourescent Light, else —> LED
     '''
     for i in range(0,len(root)):
-    p = tf.truncated_normal((1,), mean=5.25e-3, stddev=7.5e-4, dtype=tf.float32, seed=None, name=None).numpy()
-    # L = I/2
-    L = tf.truncated_normal((1,), mean=4.5, stddev=0.5, dtype=tf.float32, seed=None, name=None).numpy()
-    
-    # Flourescent Light
-    if model==0:
-        l1 = 1*L
-        l2 = 3*L
-        l3 = 2*L    
-        read_ENF_img_3c(root[i], l1, l2, l3, p)
+        p = tf.random.truncated_normal((1,), mean=5.25e-3, stddev=7.5e-4, dtype=tf.float32, seed=None, name=None).numpy()
+        # L = I/2
+        L = tf.random.truncated_normal((1,), mean=4.5, stddev=0.5, dtype=tf.float32, seed=None, name=None).numpy()
         
-    #  LED    
-    else :
-        l1 = 2*L
-        L2 = 2*L
-        l3 = 2*L 
-        read_ENF_img_3c(root[i], l1, l2, l3, p)    
+        # Flourescent Light
+        if model==0:
+            l1 = 1*L
+            l2 = 3*L
+            l3 = 2*L    
+            read_ENF_img_3c(root[i], l1, l2, l3, p, out_flk_dir, out_org_dir)
+            
+        #  LED    
+        else :
+            l1 = 2*L
+            l2 = 2*L
+            l3 = 2*L 
+            read_ENF_img_3c(root[i], l1, l2, l3, p, out_flk_dir, out_org_dir)    

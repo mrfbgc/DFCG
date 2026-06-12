@@ -72,9 +72,9 @@ def DataLoader(train_path, eval_path, buffer_size, batch_size, **kwargs):
                                                    num_parallel_calls=AUTOTUNE).shuffle(buffer_size).batch(batch_size)
     train_flk_free_set = train_flk_free_set.cache().map(preprocess_image_train, 
                                                         num_parallel_calls=AUTOTUNE).shuffle(buffer_size).batch(batch_size)
-    test_flk_set       = test_flk_set.cache().map(preprocess_image_train, 
+    test_flk_set       = test_flk_set.cache().map(preprocess_image_test, 
                                                   num_parallel_calls=AUTOTUNE).shuffle(buffer_size).batch(batch_size)
-    test_flk_free_set  = test_flk_free_set.cache().map(preprocess_image_train, 
+    test_flk_free_set  = test_flk_free_set.cache().map(preprocess_image_test, 
                                                        num_parallel_calls=AUTOTUNE).shuffle(buffer_size).batch(batch_size)
     
     return tf.data.Dataset.zip((train_flk_set, train_flk_free_set)), tf.data.Dataset.zip((test_flk_set, test_flk_free_set))
