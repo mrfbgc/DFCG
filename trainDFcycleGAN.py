@@ -18,12 +18,11 @@ parser.add_argument('--initial_learning_rate',     type=float,  default=2e-04, h
 parser.add_argument("--lr_decay",    type=float,  default=0.97,  help='Learning rate decay every [test_step] epochs')
 
 ## Training and evaluation path/lists, save path
-parser.add_argument('--train_path',  type=list,   default=['F:/datasets/demoDataset/train/flk_img', 
-                                                           'F:/datasets/demoDataset/train/org_img'],     
-                                     help='The path of the training list, [flickering img Path, flicker-free img Path]')
-parser.add_argument('--eval_path',   type=list,   default=['F:/datasets/demoDataset/eval/flk_img', 
-                                                          'F:/datasets/demoDataset/eval/org_img'],              
-                                     help='The path of the training list, [flickering img Path, flicker-free img Path]')
+parser.add_argument('--train_path', type=str, nargs=2,
+                    default=['./data/train/flk_img', './data/train/org_img'])
+parser.add_argument('--eval_path',  type=str, nargs=2,
+                    default=['./data/eval/flk_img',  './data/eval/org_img'])
+
 parser.add_argument('--save_path',   type=str,    default="./weights",   help='Path to save the models')
 parser.add_argument('--load_path',   type=str,    default="./weights/",  help='Path of the initial_model')
 

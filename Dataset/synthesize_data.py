@@ -85,6 +85,9 @@ def read_ENF_img_3c(path, L1, L2, L3, p, out_flk_dir, out_org_dir):
      L3: flickering intensity in B (1/A^c, c=B)
     '''
     image = imread_3c(path)
+    if image is None:
+        print(f'Skipping unreadable: {path}')
+        return
     image = image.astype(np.float64)
     image = image/255.
     image = cv2.resize(image, (256, 256), interpolation=cv2.INTER_LINEAR)
